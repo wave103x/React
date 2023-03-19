@@ -43,12 +43,7 @@
         "endOfLine": "auto"
       }
     ],
-    "@typescript-eslint/no-empty-interface": [
-      "error",
-      {
-        "allowSingleExtensions": true
-      }
-    ],
+    "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/no-non-null-assertion": "off",

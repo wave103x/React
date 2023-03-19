@@ -6,10 +6,16 @@ import styles from './Products.module.scss';
 
 export default class Products extends Component {
   state = {
-    data: data
+    data: data,
   };
 
   render() {
-    return <div className={styles.products}>{this.state.data.map((product: IProduct) => <Card product={product} key={product.id}/>)}</div>;
+    return (
+      <div className={styles.products}>
+        {this.state.data.map((product: IProduct) => (
+          <Card product={product} key={product.id} />
+        ))}
+      </div>
+    );
   }
 }
