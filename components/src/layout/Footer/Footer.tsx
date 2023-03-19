@@ -2,13 +2,14 @@ import styles from './Footer.module.scss';
 import { FooterProps } from './Footer.props';
 import cn from 'classnames';
 import { format } from 'date-fns';
+import { Component } from 'react';
 
-export const Footer = ({ className, ...props }: FooterProps): JSX.Element => {
-  return (
-    <footer className={cn(className, styles.footer)} {...props}>
-      <p className={styles.copyright}>@{format(new Date(), 'yyyy')}</p>
-      <a href="#">Пользовательское соглашение</a>
-      <a href="#">Политика конфиденциальности</a>
-    </footer>
-  );
-};
+export class Footer extends Component {
+  render() {
+    return (
+      <footer className={cn(styles.footer, styles.footerMargin)} >
+        <p className={styles.copyright}>@{format(new Date(), 'yyyy')}</p>
+      </footer>
+    );
+  }
+}

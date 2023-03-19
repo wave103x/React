@@ -1,0 +1,18 @@
+.header a[class="active"] {
+  color: yellowgreen;
+}
+
+.header {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2rem 0 1rem;
+}
+
+.link {
+  font-size: 1rem;
+  margin-right: 1rem;
+  text-decoration: none;
+  font-weight: 500;
+  &:hover {
+    text-decoration: underline;
+  }
+}
