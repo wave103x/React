@@ -1,0 +1,40 @@
+.tag {
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  border-radius: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tag a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.s {
+  padding: 4px 12px;
+  line-height: 12px;
+  font-size: 12px;
+}
+
+.m {
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.ghost {
+  background-color: transparent;
+  color: #222;
+  border: 1px solid #bdbdbd
+}
+.red {
+  background-color: tomato;
+  color: white;
+  font-weight: bold;
+}
+.gray {
+  background-color: #bdbdbd;
+  color: white;
+}
