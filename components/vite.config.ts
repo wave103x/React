@@ -4,5 +4,5 @@ import svgr from 'vite-plugin-svgr';
 import eslintPlugin from 'vite-plugin-eslint';
 
 export default defineConfig({
-  plugins: [svgr(), react()],
+  plugins: [svgr(), react(), eslintPlugin()],
 });
