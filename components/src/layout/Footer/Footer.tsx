@@ -1,7 +1,8 @@
-import styles from './Footer.module.scss';
-import cn from 'classnames';
-import { format } from 'date-fns';
 import { Component } from 'react';
+import { format } from 'date-fns';
+import cn from 'classnames';
+
+import styles from './Footer.module.scss';
 
 export class Footer extends Component {
   render() {

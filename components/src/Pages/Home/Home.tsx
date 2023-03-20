@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import Products from '../../components/Products/Products';
-import { SearchBar } from '../../components/SearchBar/SearchBar';
+
+import { Products } from '../../components/';
+import { SearchBar } from '../../components/';
 
 export class Home extends Component {
   render() {
     return (
-      <div>
+      <>
         <SearchBar />
         <Products />
-      </div>
+      </>
     );
   }
 }

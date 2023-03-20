@@ -1,18 +1,15 @@
 import React, { Component } from 'react';
-import styles from './SearchBar.module.scss';
-import { ReactComponent as SearchIcon } from './search.svg';
 import cn from 'classnames';
 
-type SearchBarProps = {
-  id?: number;
-};
+import styles from './SearchBar.module.scss';
 
-type SearchState = {
-  searchValue: string;
-};
+import { ReactComponent as SearchIcon } from './search.svg';
+
+import { SearchBarProps, SearchState } from './SearchBar.interface';
 
 export class SearchBar extends Component<SearchBarProps, SearchState> {
   private searchRef: React.RefObject<HTMLInputElement>;
+
   constructor(props: SearchBarProps) {
     super(props);
     this.searchRef = React.createRef();

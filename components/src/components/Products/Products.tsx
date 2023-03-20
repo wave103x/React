@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import Card from '../Card/Card';
-import data from '../../data/data.json';
+
+import { Card } from '../';
 import IProduct from '../../Types/Product';
+
 import styles from './Products.module.scss';
 
-export default class Products extends Component {
+import data from '../../data/data.json';
+
+export class Products extends Component {
   state = {
     data: data,
   };

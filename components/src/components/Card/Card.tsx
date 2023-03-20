@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import styles from './Card.module.scss';
+
 import IProduct from '../../Types/Product';
 
-export default class Card extends Component<{ product: IProduct }> {
+import styles from './Card.module.scss';
+
+export class Card extends Component<{ product: IProduct }> {
   constructor(props: { product: IProduct }) {
     super(props);
   }
