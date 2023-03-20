@@ -5,17 +5,24 @@ import IProduct from '../../Types/Product';
 
 import styles from './Products.module.scss';
 
-import data from '../../data/data.json';
+import productData from '../../data/data.json';
 
-export class Products extends Component {
-  state = {
-    data: data,
-  };
+interface State {
+  data: IProduct[];
+}
+
+export class Products extends Component<unknown, State> {
+  constructor(props: unknown) {
+    super(props);
+    this.state = {
+      data: productData,
+    };
+  }
 
   render() {
     return (
       <div className={styles.products}>
-        {this.state.data.map((product: IProduct) => (
+        {this.state?.data?.map((product: IProduct) => (
           <Card product={product} key={product.id} />
         ))}
       </div>
