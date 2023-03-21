@@ -13,11 +13,14 @@ export class SearchBar extends Component<SearchBarProps, SearchState> {
   constructor(props: SearchBarProps) {
     super(props);
     this.searchRef = React.createRef();
+    this.state = {
+      searchValue: window.localStorage.getItem('searchValue') || '',
+    };
   }
 
-  state = {
-    searchValue: window.localStorage.getItem('searchValue') || '',
-  };
+  componentWillUnmount() {
+    window.localStorage.setItem('searchValue', this.searchRef.current?.value || '');
+  }
 
   setSearchValue(value: string) {
     this.setState({
@@ -28,7 +31,6 @@ export class SearchBar extends Component<SearchBarProps, SearchState> {
   searchHandle = (event: React.FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     this.setSearchValue(value);
-    window.localStorage.setItem('searchValue', value);
   };
 
   formHandler = (event: React.FormEvent<HTMLFormElement>) => {
