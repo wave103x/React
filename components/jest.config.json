@@ -1,0 +1,18 @@
+{
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
+  "moduleNameMapper": {
+    "\\.(css|scss)$": "identity-obj-proxy",
+    "^.+\\.svg$": "jest-svg-transformer"
+  },
+  "collectCoverage": true,
+  "collectCoverageFrom": ["./src/components/Card/**", "./src/components/Products/**"],
+  "coverageThreshold": {
+    "global": {
+      "lines": 40
+    }
+  }
+}
