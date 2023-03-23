@@ -39,22 +39,11 @@ export class Form extends Component<
 
   handleForm(event: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    // const form = event.target as HTMLFormElement;
-    // const formData = new FormData(form);
-    // console.log([...formData.entries()]);
-    const feelings = [
-      this.feelAngry,
-      this.feelCurious,
-      this.feelJoy,
-      this.feelSad,
-      this.feelSad,
-      this.feelShame,
-    ];
-
+    const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame];
     const values = {
       name: this.nameRef.current?.value || 'TestName',
       word: this.wordRef.current?.value || 'Gugu',
-      date: new Date(Date.parse(this.dateRef.current?.value as string)) || new Date(),
+      date: new Date(Date.parse(this.dateRef.current?.value as string) || new Date()) || new Date(),
       heard: this.whoHeard.current?.value || 'mom',
       feelings: feelings
         .map((elem) => {
@@ -62,12 +51,10 @@ export class Form extends Component<
         })
         .filter((elem) => elem),
       faked: this.fakeYes.current?.checked || false,
-      photo: this.fileRef.current?.files || false,
+      photo: this.fileRef.current?.files?.item(0) || false,
     };
-    // feelings.map((elem) => {
-    //   if (elem.current?.checked) values.feelings.push(elem.current?.value);
-    // });
     this.props.setStateCard(values);
+    if (event.target instanceof HTMLFormElement) event.target.reset();
   }
 
   render() {

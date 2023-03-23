@@ -5,5 +5,5 @@ export type CardFormState = {
   heard: string;
   feelings?: (string | undefined)[];
   faked: boolean;
-  photo?: FileList | boolean;
+  photo?: File | boolean;
 };

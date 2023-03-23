@@ -1,43 +1,24 @@
 import React, { Component } from 'react';
 
-type Props = {
-  name: string;
-  word: string;
-  date: Date;
-  heared: string;
-  feelings: string[];
-  faked: string;
-  photo: string;
-};
+import { CardFormState } from '../../Types/CardFormProps';
 
-type State = Props;
-
-export class FormCard extends Component<Props, State> {
-  constructor(props: Props) {
+export class FormCard extends Component<CardFormState, CardFormState> {
+  constructor(props: CardFormState) {
     super(props);
-    this.state = {
-      name: 'Myname',
-      word: 'qq',
-      date: new Date(),
-      heared: 'mom',
-      feelings: ['sad'],
-      faked: 'yes',
-      photo: 'http://qq.com',
-    };
   }
 
   render() {
     return (
       <>
         <div>
-          <img src={this.state.photo} alt="card's photo" />
+          {this.props.photo instanceof File && <img src={URL.createObjectURL(this.props.photo)} />}
         </div>
-        <h2>{this.state.name}</h2>
-        <p>{this.state.word}</p>
-        <p>{this.state.date.getDate()}</p>
-        <p>{this.state.heared}</p>
-        <p>{this.state.feelings}</p>
-        <p>{this.state.faked}</p>
+        <h2>{this.props.name}</h2>
+        <p>{this.props.word}</p>
+        <p>{this.props.date.getFullYear()}</p>
+        <p>{this.props.heard}</p>
+        <p>{this.props.feelings}</p>
+        <p>{this.props.faked ? 'I am tricky' : 'I am honest'}</p>
       </>
     );
   }

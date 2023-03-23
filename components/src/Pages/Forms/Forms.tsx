@@ -10,24 +10,29 @@ type Props = {
 };
 
 type State = {
-  cardData: CardFormState;
-  showCard: boolean;
+  cards: CardFormState[];
 };
 
 export class Forms extends Component<Props, State> {
-  setStateCard(data: CardFormState) {
-    this.setState({ cardData: data });
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      cards: [],
+    };
   }
 
-  componentDidUpdate() {
-    // this.setState({ showCard: true });
+  setStateCard(data: CardFormState) {
+    this.setState((prevState: State) => ({
+      cards: [...prevState.cards, data],
+    }));
   }
+
   render() {
     return (
       <>
         <h1>Let&apos;s dive into the past</h1>
         <Form setStateCard={this.setStateCard.bind(this)} />
-        {/* {this.state.showCard ?? <FormCardList {...this.state.cardData} />} */}
+        <FormCardList {...this.state.cards} />
         <div id="cards">
           <Outlet />
         </div>
