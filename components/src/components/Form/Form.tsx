@@ -1,0 +1,138 @@
+import React, { Component, createRef } from 'react';
+
+import styles from './Form.module.scss';
+
+import { CardFormState } from '../../Types/CardFormProps';
+
+export class Form extends Component<
+  { setStateCard: (data: CardFormState) => void },
+  { cardData: CardFormState }
+> {
+  private nameRef: React.RefObject<HTMLInputElement>;
+  private wordRef: React.RefObject<HTMLInputElement>;
+  private dateRef: React.RefObject<HTMLInputElement>;
+  private fileRef: React.RefObject<HTMLInputElement>;
+  private fakeYes: React.RefObject<HTMLInputElement>;
+  private fakePartly: React.RefObject<HTMLInputElement>;
+  private feelSad: React.RefObject<HTMLInputElement>;
+  private feelShame: React.RefObject<HTMLInputElement>;
+  private feelJoy: React.RefObject<HTMLInputElement>;
+  private feelCurious: React.RefObject<HTMLInputElement>;
+  private feelAngry: React.RefObject<HTMLInputElement>;
+  private whoHeard: React.RefObject<HTMLSelectElement>;
+
+  constructor(props: { setStateCard: (data: CardFormState) => void }) {
+    super(props);
+    this.nameRef = createRef();
+    this.wordRef = createRef();
+    this.dateRef = createRef();
+    this.fileRef = createRef();
+    this.fakeYes = createRef();
+    this.fakePartly = createRef();
+    this.feelSad = createRef();
+    this.feelShame = createRef();
+    this.feelJoy = createRef();
+    this.feelCurious = createRef();
+    this.feelAngry = createRef();
+    this.whoHeard = createRef();
+  }
+
+  handleForm(event: React.FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
+    // const form = event.target as HTMLFormElement;
+    // const formData = new FormData(form);
+    // console.log([...formData.entries()]);
+    const feelings = [
+      this.feelAngry,
+      this.feelCurious,
+      this.feelJoy,
+      this.feelSad,
+      this.feelSad,
+      this.feelShame,
+    ];
+
+    const values = {
+      name: this.nameRef.current?.value || 'TestName',
+      word: this.wordRef.current?.value || 'Gugu',
+      date: new Date(Date.parse(this.dateRef.current?.value as string)) || new Date(),
+      heard: this.whoHeard.current?.value || 'mom',
+      feelings: feelings
+        .map((elem) => {
+          if (elem.current?.checked) return elem.current.value;
+        })
+        .filter((elem) => elem),
+      faked: this.fakeYes.current?.checked || false,
+      photo: this.fileRef.current?.files || false,
+    };
+    // feelings.map((elem) => {
+    //   if (elem.current?.checked) values.feelings.push(elem.current?.value);
+    // });
+    this.props.setStateCard(values);
+  }
+
+  render() {
+    return (
+      <form className={styles.form} role="add-card" onSubmit={this.handleForm.bind(this)}>
+        <label>
+          What is your name
+          <input ref={this.nameRef} type="text" name="name" pattern="^[A-Z]+[a-zA-Z]*$" />
+        </label>
+        <label>
+          Your first word in the life
+          <input ref={this.wordRef} type="text" name="word" />
+        </label>
+        <label>
+          When was it
+          <input ref={this.dateRef} type="date" name="date" />
+        </label>
+        <label>
+          Who heard it
+          <select ref={this.whoHeard} defaultValue="nobody" name="who heard" id="select">
+            <option value="mom">Mom</option>
+            <option value="dad">Dad</option>
+            <option value="nobody">Nobody</option>
+          </select>
+        </label>
+        <label>
+          What was your feelings
+          <label>
+            <input ref={this.feelShame} type="checkbox" name="feelings" value="shame" /> Shame
+          </label>
+          <label>
+            <input ref={this.feelJoy} type="checkbox" name="feelings" value="joy" /> Joy
+          </label>
+          <label>
+            <input ref={this.feelSad} type="checkbox" name="feelings" value="sad" /> Sad
+          </label>
+          <label>
+            <input ref={this.feelCurious} type="checkbox" name="feelings" value="curious" /> Curious
+          </label>
+          <label>
+            <input ref={this.feelAngry} type="checkbox" name="feelings" value="angry" />
+            Angry af
+          </label>
+        </label>
+        <label>
+          Attach proof of your words
+          <input ref={this.fileRef} type="file" name="photo" />
+        </label>
+        <label>
+          Have you faked all passed info
+          <div>
+            <label>
+              <input ref={this.fakeYes} type="radio" name="have faked" value="yes" />
+              Yes
+            </label>
+          </div>
+          <div>
+            <label>
+              <input ref={this.fakePartly} type="radio" name="have faked" value="partly" />
+              Partly
+            </label>
+          </div>
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    );
+  }
+}

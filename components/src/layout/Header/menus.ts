@@ -11,4 +11,9 @@ export const menus = [
     text: 'About',
     id: 2,
   },
+  {
+    to: RoutePaths.FORMS,
+    text: 'Forms',
+    id: 3,
+  },
 ];
