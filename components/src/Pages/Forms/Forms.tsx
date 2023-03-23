@@ -3,6 +3,8 @@ import { Outlet } from 'react-router-dom';
 
 import { Form, FormCardList } from '../../components/';
 
+import styles from './Forms.module.scss';
+
 import { CardFormState } from '../../Types/CardFormProps';
 
 type Props = {
@@ -11,6 +13,7 @@ type Props = {
 
 type State = {
   cards: CardFormState[];
+  isDoneActive: boolean;
 };
 
 export class Forms extends Component<Props, State> {
@@ -18,6 +21,7 @@ export class Forms extends Component<Props, State> {
     super(props);
     this.state = {
       cards: [],
+      isDoneActive: false,
     };
   }
 
@@ -25,11 +29,16 @@ export class Forms extends Component<Props, State> {
     this.setState((prevState: State) => ({
       cards: [...prevState.cards, data],
     }));
+    this.setState({ isDoneActive: true });
+    setTimeout(() => {
+      this.setState({ isDoneActive: false });
+    }, 2000);
   }
 
   render() {
     return (
       <>
+        {this.state.isDoneActive ? <div className={styles.confirm}>Done!</div> : null}
         <h1>Let&apos;s dive into the past</h1>
         <Form setStateCard={this.setStateCard.bind(this)} />
         <FormCardList {...this.state.cards} />
