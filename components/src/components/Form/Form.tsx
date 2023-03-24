@@ -6,7 +6,7 @@ import { CardFormState } from '../../Types/CardFormProps';
 
 export class Form extends Component<
   { setStateCard: (data: CardFormState) => void },
-  { cardData: CardFormState }
+  { checkBoxError?: boolean }
 > {
   private nameRef: React.RefObject<HTMLInputElement>;
   private wordRef: React.RefObject<HTMLInputElement>;
@@ -35,21 +35,24 @@ export class Form extends Component<
     this.feelCurious = createRef();
     this.feelAngry = createRef();
     this.whoHeard = createRef();
+    this.state = {
+      checkBoxError: false,
+    };
   }
 
   handleForm(event: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame];
+    const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame]
+      .map((elem) => {
+        if (elem.current?.checked) return elem.current.value;
+      })
+      .filter((elem) => elem);
     const values = {
-      name: this.nameRef.current?.value || 'TestName',
-      word: this.wordRef.current?.value || 'Gugu',
-      date: new Date(Date.parse(this.dateRef.current?.value as string) || new Date()) || new Date(),
+      name: this.nameRef.current?.value,
+      word: this.wordRef.current?.value,
+      date: new Date(Date.parse(this.dateRef.current?.value as string)),
       heard: this.whoHeard.current?.value || 'mom',
-      feelings: feelings
-        .map((elem) => {
-          if (elem.current?.checked) return elem.current.value;
-        })
-        .filter((elem) => elem),
+      feelings: feelings,
       faked: this.fakeYes.current?.checked || false,
       photo: this.fileRef.current?.files?.item(0) || false,
     };
@@ -61,16 +64,29 @@ export class Form extends Component<
     return (
       <form className={styles.form} role="add-card" onSubmit={this.handleForm.bind(this)}>
         <label>
-          What is your name
-          <input ref={this.nameRef} type="text" name="name" pattern="^[A-Z]+[a-zA-Z]*$" />
+          Your name
+          <input
+            ref={this.nameRef}
+            required={true}
+            type="text"
+            name="name"
+            pattern="^[A-Z]+[a-zA-Z]*$"
+          />
         </label>
         <label>
           Your first word in the life
-          <input ref={this.wordRef} type="text" name="word" />
+          <input ref={this.wordRef} type="text" name="word" required={true} />
         </label>
         <label>
           When was it
-          <input ref={this.dateRef} type="date" name="date" />
+          <input
+            ref={this.dateRef}
+            type="date"
+            name="date"
+            min="1980-01-01"
+            max="2015-01-01"
+            required={true}
+          />
         </label>
         <label>
           Who heard it
@@ -80,7 +96,7 @@ export class Form extends Component<
             <option value="nobody">Nobody</option>
           </select>
         </label>
-        <label>
+        <label className={styles.boxes}>
           What was your feelings
           <label>
             <input ref={this.feelShame} type="checkbox" name="feelings" value="shame" /> Shame
@@ -96,14 +112,21 @@ export class Form extends Component<
           </label>
           <label>
             <input ref={this.feelAngry} type="checkbox" name="feelings" value="angry" />
-            Angry af
+            &nbsp;Angry af
           </label>
+          {this.state.checkBoxError && <p>Min one to choose</p>}
         </label>
         <label>
           Attach proof of your words
-          <input ref={this.fileRef} type="file" name="photo" />
+          <input
+            ref={this.fileRef}
+            type="file"
+            name="photo"
+            accept="image/png, image/gif, image/jpeg"
+            required={true}
+          />
         </label>
-        <label>
+        <label className={styles.boxes}>
           Have you faked all passed info
           <div>
             <label>
@@ -117,6 +140,9 @@ export class Form extends Component<
               Partly
             </label>
           </div>
+        </label>
+        <label className={styles.confident}>
+          <input type="checkbox" required={true} />I am confident in my answers
         </label>
         <button type="submit">Submit</button>
       </form>

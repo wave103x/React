@@ -1,6 +1,6 @@
 export type CardFormState = {
-  name: string;
-  word: string;
+  name: string | undefined;
+  word: string | undefined;
   date: Date;
   heard: string;
   feelings?: (string | undefined)[];

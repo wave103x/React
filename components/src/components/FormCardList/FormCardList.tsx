@@ -12,6 +12,12 @@ export class FormCardList extends Component<CardFormState[], CardFormState[]> {
   }
   render() {
     const cards = Object.values(this.props);
-    return cards.map((elem, index) => <FormCard {...elem} key={index} />);
+    return (
+      <div className={styles.cards}>
+        {cards.map((elem, index) => (
+          <FormCard {...elem} key={index} />
+        ))}
+      </div>
+    );
   }
 }

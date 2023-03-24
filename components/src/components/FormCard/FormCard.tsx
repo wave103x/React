@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import styles from './FormCard.module.scss';
+
 import { CardFormState } from '../../Types/CardFormProps';
 
 export class FormCard extends Component<CardFormState, CardFormState> {
@@ -8,18 +10,35 @@ export class FormCard extends Component<CardFormState, CardFormState> {
   }
 
   render() {
+    console.log(this.props);
     return (
-      <>
-        <div>
-          {this.props.photo instanceof File && <img src={URL.createObjectURL(this.props.photo)} />}
+      <div className={styles.card}>
+        <div className={styles.imageWrap}>
+          {this.props.photo instanceof File && (
+            <img className={styles.image} src={URL.createObjectURL(this.props.photo)} />
+          )}
         </div>
-        <h2>{this.props.name}</h2>
-        <p>{this.props.word}</p>
-        <p>{this.props.date.getFullYear()}</p>
-        <p>{this.props.heard}</p>
-        <p>{this.props.feelings}</p>
-        <p>{this.props.faked ? 'I am tricky' : 'I am honest'}</p>
-      </>
+        <div className={styles.text}>
+          <h3>{this.props.name}</h3>
+          <p>
+            <span>Word:</span> {this.props.word}
+          </p>
+          <p>
+            <span>Date:</span> {this.props.date.getFullYear()}
+          </p>
+          <p>
+            <span>Listener:</span> {this.props.heard}
+          </p>
+          {this.props.feelings?.length ? (
+            <p>
+              <span>Feelings:</span> {this.props.feelings}
+            </p>
+          ) : null}
+          <p>
+            <span>You&apos;re:</span> {this.props.faked ? 'Tricky' : 'Honest'}
+          </p>
+        </div>
+      </div>
     );
   }
 }

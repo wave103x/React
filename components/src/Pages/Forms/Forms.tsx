@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Outlet } from 'react-router-dom';
 
 import { Form, FormCardList } from '../../components/';
 
@@ -40,10 +39,9 @@ export class Forms extends Component<Props, State> {
       <>
         {this.state.isDoneActive ? <div className={styles.confirm}>Done!</div> : null}
         <h1>Let&apos;s dive into the past</h1>
-        <Form setStateCard={this.setStateCard.bind(this)} />
-        <FormCardList {...this.state.cards} />
-        <div id="cards">
-          <Outlet />
+        <div className={styles.formPage}>
+          <Form setStateCard={this.setStateCard.bind(this)} />
+          <FormCardList {...this.state.cards} />
         </div>
       </>
     );
