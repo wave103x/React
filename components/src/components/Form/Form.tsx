@@ -6,48 +6,51 @@ import { CardFormState } from '../../Types/CardFormProps';
 
 export class Form extends Component<
   { setStateCard: (data: CardFormState) => void },
-  { checkBoxError?: boolean }
+  { checkBoxError?: boolean; nameError?: boolean }
 > {
-  private nameRef: React.RefObject<HTMLInputElement>;
-  private wordRef: React.RefObject<HTMLInputElement>;
-  private dateRef: React.RefObject<HTMLInputElement>;
-  private fileRef: React.RefObject<HTMLInputElement>;
-  private fakeYes: React.RefObject<HTMLInputElement>;
-  private fakePartly: React.RefObject<HTMLInputElement>;
-  private feelSad: React.RefObject<HTMLInputElement>;
-  private feelShame: React.RefObject<HTMLInputElement>;
-  private feelJoy: React.RefObject<HTMLInputElement>;
-  private feelCurious: React.RefObject<HTMLInputElement>;
-  private feelAngry: React.RefObject<HTMLInputElement>;
-  private whoHeard: React.RefObject<HTMLSelectElement>;
+  private nameRef: React.RefObject<HTMLInputElement> = createRef();
+  private wordRef: React.RefObject<HTMLInputElement> = createRef();
+  private dateRef: React.RefObject<HTMLInputElement> = createRef();
+  private fileRef: React.RefObject<HTMLInputElement> = createRef();
+  private fakeYes: React.RefObject<HTMLInputElement> = createRef();
+  private fakePartly: React.RefObject<HTMLInputElement> = createRef();
+  private feelSad: React.RefObject<HTMLInputElement> = createRef();
+  private feelShame: React.RefObject<HTMLInputElement> = createRef();
+  private feelJoy: React.RefObject<HTMLInputElement> = createRef();
+  private feelCurious: React.RefObject<HTMLInputElement> = createRef();
+  private feelAngry: React.RefObject<HTMLInputElement> = createRef();
+  private whoHeard: React.RefObject<HTMLSelectElement> = createRef();
 
   constructor(props: { setStateCard: (data: CardFormState) => void }) {
     super(props);
-    this.nameRef = createRef();
-    this.wordRef = createRef();
-    this.dateRef = createRef();
-    this.fileRef = createRef();
-    this.fakeYes = createRef();
-    this.fakePartly = createRef();
-    this.feelSad = createRef();
-    this.feelShame = createRef();
-    this.feelJoy = createRef();
-    this.feelCurious = createRef();
-    this.feelAngry = createRef();
-    this.whoHeard = createRef();
     this.state = {
       checkBoxError: false,
+      nameError: false,
     };
   }
 
-  handleForm(event: React.FormEvent<HTMLFormElement>) {
-    event?.preventDefault();
+  checkValidity() {
+    if (
+      this.nameRef.current?.validity.patternMismatch ||
+      this.nameRef.current?.validity.tooShort ||
+      !this.nameRef.current?.value
+    ) {
+      this.nameRef.current?.setCustomValidity('min 3 chars, first one is capite');
+      this.setState({ nameError: true });
+    } else {
+      this.setState({ nameError: false });
+      this.nameRef.current?.setCustomValidity('');
+    }
+  }
+
+  createCardValues() {
     const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame]
       .map((elem) => {
         if (elem.current?.checked) return elem.current.value;
       })
       .filter((elem) => elem);
-    const values = {
+
+    return {
       name: this.nameRef.current?.value,
       word: this.wordRef.current?.value,
       date: new Date(Date.parse(this.dateRef.current?.value as string)),
@@ -56,37 +59,51 @@ export class Form extends Component<
       faked: this.fakeYes.current?.checked || false,
       photo: this.fileRef.current?.files?.item(0) || false,
     };
-    this.props.setStateCard(values);
-    if (event.target instanceof HTMLFormElement) event.target.reset();
+  }
+
+  handleForm(event: React.FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
+    const form = event.target;
+    if (!(form instanceof HTMLFormElement)) return;
+
+    this.checkValidity();
+
+    const values = this.createCardValues();
+
+    if (form.checkValidity()) {
+      this.props.setStateCard(values);
+      form.reset();
+    }
   }
 
   render() {
     return (
-      <form className={styles.form} role="add-card" onSubmit={this.handleForm.bind(this)}>
+      <form
+        noValidate={true}
+        className={styles.form}
+        role="add-card"
+        onSubmit={this.handleForm.bind(this)}
+      >
         <label>
           Your name
           <input
             ref={this.nameRef}
-            required={true}
+            minLength={3}
             type="text"
             name="name"
             pattern="^[A-Z]+[a-zA-Z]*$"
           />
+          {this.state.nameError && (
+            <p className={styles.errorMessage}>&#9888; min 3 chars, first one is capital</p>
+          )}
         </label>
         <label>
           Your first word in the life
-          <input ref={this.wordRef} type="text" name="word" required={true} />
+          <input ref={this.wordRef} type="text" name="word" />
         </label>
         <label>
           When was it
-          <input
-            ref={this.dateRef}
-            type="date"
-            name="date"
-            min="1980-01-01"
-            max="2015-01-01"
-            required={true}
-          />
+          <input ref={this.dateRef} type="date" name="date" min="1980-01-01" max="2015-01-01" />
         </label>
         <label>
           Who heard it
@@ -123,7 +140,6 @@ export class Form extends Component<
             type="file"
             name="photo"
             accept="image/png, image/gif, image/jpeg"
-            required={true}
           />
         </label>
         <label className={styles.boxes}>
@@ -142,7 +158,7 @@ export class Form extends Component<
           </div>
         </label>
         <label className={styles.confident}>
-          <input type="checkbox" required={true} />I am confident in my answers
+          <input type="checkbox" />I am confident in my answers
         </label>
         <button type="submit">Submit</button>
       </form>

@@ -10,7 +10,6 @@ export class FormCard extends Component<CardFormState, CardFormState> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className={styles.card}>
         <div className={styles.imageWrap}>
