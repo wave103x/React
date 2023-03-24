@@ -29,20 +29,6 @@ export class Form extends Component<
     };
   }
 
-  checkValidity() {
-    if (
-      this.nameRef.current?.validity.patternMismatch ||
-      this.nameRef.current?.validity.tooShort ||
-      !this.nameRef.current?.value
-    ) {
-      this.nameRef.current?.setCustomValidity('min 3 chars, first one is capite');
-      this.setState({ nameError: true });
-    } else {
-      this.setState({ nameError: false });
-      this.nameRef.current?.setCustomValidity('');
-    }
-  }
-
   createCardValues() {
     const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame]
       .map((elem) => {
@@ -66,48 +52,44 @@ export class Form extends Component<
     const form = event.target;
     if (!(form instanceof HTMLFormElement)) return;
 
-    this.checkValidity();
-
     const values = this.createCardValues();
 
-    if (form.checkValidity()) {
-      this.props.setStateCard(values);
-      form.reset();
-    }
+    this.props.setStateCard(values);
+    form.reset();
   }
 
   render() {
     return (
-      <form
-        noValidate={true}
-        className={styles.form}
-        role="add-card"
-        onSubmit={this.handleForm.bind(this)}
-      >
+      <form className={styles.form} role="add-card" onSubmit={this.handleForm.bind(this)}>
         <label>
           Your name
           <input
             ref={this.nameRef}
             minLength={3}
+            required={true}
             type="text"
             name="name"
             pattern="^[A-Z]+[a-zA-Z]*$"
           />
-          {this.state.nameError && (
-            <p className={styles.errorMessage}>&#9888; min 3 chars, first one is capital</p>
-          )}
         </label>
         <label>
           Your first word in the life
-          <input ref={this.wordRef} type="text" name="word" />
+          <input ref={this.wordRef} type="text" name="word" required={true} />
         </label>
         <label>
           When was it
-          <input ref={this.dateRef} type="date" name="date" min="1980-01-01" max="2015-01-01" />
+          <input
+            ref={this.dateRef}
+            type="date"
+            name="date"
+            min="1980-01-01"
+            max="2015-01-01"
+            required={true}
+          />
         </label>
         <label>
           Who heard it
-          <select ref={this.whoHeard} defaultValue="nobody" name="who heard" id="select">
+          <select ref={this.whoHeard} name="who heard" id="select" required={true}>
             <option value="mom">Mom</option>
             <option value="dad">Dad</option>
             <option value="nobody">Nobody</option>
@@ -140,13 +122,20 @@ export class Form extends Component<
             type="file"
             name="photo"
             accept="image/png, image/gif, image/jpeg"
+            required={true}
           />
         </label>
         <label className={styles.boxes}>
           Have you faked all passed info
           <div>
             <label>
-              <input ref={this.fakeYes} type="radio" name="have faked" value="yes" />
+              <input
+                ref={this.fakeYes}
+                type="radio"
+                name="have faked"
+                value="yes"
+                required={true}
+              />
               Yes
             </label>
           </div>
@@ -158,7 +147,7 @@ export class Form extends Component<
           </div>
         </label>
         <label className={styles.confident}>
-          <input type="checkbox" />I am confident in my answers
+          <input type="checkbox" required={true} name="confirm" />I am confident in my answers
         </label>
         <button type="submit">Submit</button>
       </form>
