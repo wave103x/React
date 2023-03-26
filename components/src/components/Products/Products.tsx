@@ -7,11 +7,7 @@ import styles from './Products.module.scss';
 
 import productData from '../../data/data.json';
 
-interface State {
-  data: IProduct[];
-}
-
-export class Products extends Component<unknown, State> {
+export class Products extends Component<unknown, { data: IProduct[] }> {
   constructor(props: unknown) {
     super(props);
     this.state = {

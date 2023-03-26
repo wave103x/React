@@ -6,17 +6,14 @@ import styles from './Forms.module.scss';
 
 import { CardFormState } from '../../Types/CardFormProps';
 
-type Props = {
-  id?: number;
-};
-
-type State = {
-  cards: CardFormState[];
-  isDoneActive: boolean;
-};
-
-export class Forms extends Component<Props, State> {
-  constructor(props: Props) {
+export class Forms extends Component<
+  null,
+  {
+    cards: CardFormState[];
+    isDoneActive: boolean;
+  }
+> {
+  constructor(props: null) {
     super(props);
     this.state = {
       cards: [],
@@ -25,7 +22,7 @@ export class Forms extends Component<Props, State> {
   }
 
   setStateCard(data: CardFormState) {
-    this.setState((prevState: State) => ({
+    this.setState((prevState) => ({
       cards: [...prevState.cards, data],
     }));
     this.setState({ isDoneActive: true });
