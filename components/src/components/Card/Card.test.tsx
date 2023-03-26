@@ -1,7 +1,7 @@
-import { Card } from '../components';
+import { Card } from '..';
 import { render, screen } from '@testing-library/react';
 
-import IProduct from '../Types/Product';
+import IProduct from '../../Types/Product';
 
 describe('card testing', () => {
   const testProduct: IProduct = {

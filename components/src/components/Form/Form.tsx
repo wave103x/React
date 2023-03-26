@@ -113,7 +113,6 @@ export class Form extends Component<
             <input ref={this.feelAngry} type="checkbox" name="feelings" value="angry" />
             &nbsp;Angry af
           </label>
-          {this.state.checkBoxError && <p>Min one to choose</p>}
         </label>
         <label>
           Attach proof of your words

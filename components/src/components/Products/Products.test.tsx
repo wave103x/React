@@ -1,7 +1,7 @@
-import { Products } from '../components';
+import { Products } from '..';
 import { render, screen } from '@testing-library/react';
 
-import IProduct from '../Types/Product';
+import IProduct from '../../Types/Product';
 
 describe('products test', () => {
   const testProduct: IProduct = {

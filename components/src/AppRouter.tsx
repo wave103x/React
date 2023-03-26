@@ -6,7 +6,6 @@ import { About } from './Pages/';
 import { Forms } from './Pages/';
 import { NotFound } from './Pages/';
 import { Layout } from './layout/Layout';
-import { FormCard } from './components';
 
 import { RoutePaths } from './enums/RoutePaths';
 
