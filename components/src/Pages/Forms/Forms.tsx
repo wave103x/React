@@ -6,14 +6,18 @@ import styles from './Forms.module.scss';
 
 import { CardFormState } from '../../Types/CardFormProps';
 
+type Props = {
+  id?: number;
+};
+
 export class Forms extends Component<
-  null,
+  Props,
   {
     cards: CardFormState[];
     isDoneActive: boolean;
   }
 > {
-  constructor(props: null) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       cards: [],
