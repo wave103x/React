@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { Form } from './Form';
+import { Form } from './Form1';
 
 describe('form test', () => {
   const setCardState = jest.fn();

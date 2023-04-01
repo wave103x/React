@@ -68,10 +68,11 @@ button {
 }
 
 label.confident {
-  flex-direction: row;
+  display: block;
+  // flex-direction: column;
 }
 
-.errorMessage {
+.error {
   margin: 0;
   color: tomato;
 }

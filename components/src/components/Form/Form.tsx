@@ -1,155 +1,117 @@
-import React, { Component, createRef } from 'react';
+import React, { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 import styles from './Form.module.scss';
 
 import { CardFormState } from '../../Types/CardFormProps';
 
-export class Form extends Component<
-  { setStateCard: (data: CardFormState) => void },
-  { checkBoxError?: boolean; nameError?: boolean }
-> {
-  private nameRef: React.RefObject<HTMLInputElement> = createRef();
-  private wordRef: React.RefObject<HTMLInputElement> = createRef();
-  private dateRef: React.RefObject<HTMLInputElement> = createRef();
-  private fileRef: React.RefObject<HTMLInputElement> = createRef();
-  private fakeYes: React.RefObject<HTMLInputElement> = createRef();
-  private fakePartly: React.RefObject<HTMLInputElement> = createRef();
-  private feelSad: React.RefObject<HTMLInputElement> = createRef();
-  private feelShame: React.RefObject<HTMLInputElement> = createRef();
-  private feelJoy: React.RefObject<HTMLInputElement> = createRef();
-  private feelCurious: React.RefObject<HTMLInputElement> = createRef();
-  private feelAngry: React.RefObject<HTMLInputElement> = createRef();
-  private whoHeard: React.RefObject<HTMLSelectElement> = createRef();
+type FormValues = CardFormState;
 
-  constructor(props: { setStateCard: (data: CardFormState) => void }) {
-    super(props);
-    this.state = {
-      checkBoxError: false,
-      nameError: false,
-    };
-  }
+export const Form = ({ setStateCard }: { setStateCard: (data: CardFormState) => void }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<FormValues>();
 
-  createCardValues() {
-    const feelings = [this.feelAngry, this.feelCurious, this.feelJoy, this.feelSad, this.feelShame]
-      .map((elem) => {
-        if (elem.current?.checked) return elem.current.value;
-      })
-      .filter((elem) => elem);
+  const onSubmit: SubmitHandler<FormValues> = (formData: CardFormState) => {
+    const inputPhoto = structuredClone(formData.photo);
+    setStateCard({ ...formData, photo: inputPhoto });
+  };
 
-    return {
-      name: this.nameRef.current?.value,
-      word: this.wordRef.current?.value,
-      date: new Date(Date.parse(this.dateRef.current?.value as string)),
-      heard: this.whoHeard.current?.value || 'mom',
-      feelings: feelings,
-      faked: this.fakeYes.current?.checked || false,
-      photo: this.fileRef.current?.files?.item(0) || false,
-    };
-  }
+  useEffect(() => {
+    if (isSubmitSuccessful) reset();
+  }, [isSubmitSuccessful, reset]);
 
-  handleForm(event: React.FormEvent<HTMLFormElement>) {
-    event?.preventDefault();
-    const form = event.target;
-    if (!(form instanceof HTMLFormElement)) return;
-
-    const values = this.createCardValues();
-
-    this.props.setStateCard(values);
-    form.reset();
-  }
-
-  render() {
-    return (
-      <form className={styles.form} role="add-card" onSubmit={this.handleForm.bind(this)}>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <label>
+        Your name
+        <input
+          type="text"
+          {...register('name', {
+            required: 'required field',
+            minLength: { value: 3, message: 'min 3 chars' },
+            pattern: { value: /^[A-Z]+[a-zA-Z]*$/, message: 'first capital' },
+          })}
+        />
+        <p className={styles.error}>{errors.name?.message}</p>
+      </label>
+      <label>
+        Your first word in the life
+        <input
+          type="text"
+          {...register('word', {
+            required: 'required field',
+          })}
+        />
+        <p className={styles.error}>{errors.word?.message}</p>
+      </label>
+      <label>
+        When was it
+        <input
+          type="date"
+          {...register('date', {
+            required: 'required field',
+          })}
+        />
+        <p className={styles.error}>{errors.date?.message}</p>
+      </label>
+      <label>
+        Who heard it
+        <select {...register('heard', { required: 'required field' })}>
+          <option value="mom">Mom</option>
+          <option value="dad">Dad</option>
+          <option value="nobody">Nobody</option>
+        </select>
+        <p className={styles.error}>{errors.heard?.message}</p>
+      </label>
+      <label>
+        What was your feelings
         <label>
-          Your name
-          <input
-            ref={this.nameRef}
-            minLength={3}
-            required={true}
-            type="text"
-            name="name"
-            pattern="^[A-Z]+[a-zA-Z]*$"
-          />
-        </label>
-        <label>
-          Your first word in the life
-          <input ref={this.wordRef} type="text" name="word" required={true} />
+          <input type="checkbox" value="shame" {...register('feelings')} /> Shame
         </label>
         <label>
-          When was it
-          <input
-            ref={this.dateRef}
-            type="date"
-            name="date"
-            min="1980-01-01"
-            max="2015-01-01"
-            required={true}
-          />
+          <input type="checkbox" value="joy" {...register('feelings')} /> Joy
         </label>
         <label>
-          Who heard it
-          <select ref={this.whoHeard} name="who heard" id="select" required={true}>
-            <option value="mom">Mom</option>
-            <option value="dad">Dad</option>
-            <option value="nobody">Nobody</option>
-          </select>
-        </label>
-        <label className={styles.boxes}>
-          What was your feelings
-          <label>
-            <input ref={this.feelShame} type="checkbox" name="feelings" value="shame" /> Shame
-          </label>
-          <label>
-            <input ref={this.feelJoy} type="checkbox" name="feelings" value="joy" /> Joy
-          </label>
-          <label>
-            <input ref={this.feelSad} type="checkbox" name="feelings" value="sad" /> Sad
-          </label>
-          <label>
-            <input ref={this.feelCurious} type="checkbox" name="feelings" value="curious" /> Curious
-          </label>
-          <label>
-            <input ref={this.feelAngry} type="checkbox" name="feelings" value="angry" />
-            &nbsp;Angry af
-          </label>
+          <input type="checkbox" value="sad" {...register('feelings')} /> Sad
         </label>
         <label>
-          Attach proof of your words
-          <input
-            ref={this.fileRef}
-            type="file"
-            name="photo"
-            accept="image/png, image/gif, image/jpeg"
-            required={true}
-          />
+          <input type="checkbox" value="curious" {...register('feelings')} /> Curious
         </label>
-        <label className={styles.boxes}>
-          Have you faked all passed info
-          <div>
-            <label>
-              <input
-                ref={this.fakeYes}
-                type="radio"
-                name="have faked"
-                value="yes"
-                required={true}
-              />
-              Yes
-            </label>
-          </div>
-          <div>
-            <label>
-              <input ref={this.fakePartly} type="radio" name="have faked" value="partly" />
-              Partly
-            </label>
-          </div>
+        <label>
+          <input type="checkbox" value="angry" {...register('feelings')} /> Angry af
         </label>
-        <label className={styles.confident}>
-          <input type="checkbox" required={true} name="confirm" />I am confident in my answers
+      </label>
+      <label>
+        Attach proof of your words
+        <input
+          type="file"
+          {...register('photo', { required: 'required field' })}
+          accept="image/png, image/gif, image/jpeg"
+        />
+        <p className={styles.error}>{errors.photo?.message}</p>
+      </label>
+      <label>
+        Have you faked all passed info?
+        <label>
+          <input value="yes" type="radio" {...register('faked', { required: 'required field' })} />
+          Partly
         </label>
-        <button type="submit">Submit</button>
-      </form>
-    );
-  }
-}
+        <label>
+          <input value="no" type="radio" {...register('faked', { required: 'required field' })} />
+          Nope
+        </label>
+        <p className={styles.error}>{errors.faked?.message}</p>
+      </label>
+      <label className={styles.confident}>
+        <input type="checkbox" {...register('confirm', { required: 'required field' })} /> I am
+        confident in my answers
+        <p className={styles.error}>{errors.confirm?.message}</p>
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+};

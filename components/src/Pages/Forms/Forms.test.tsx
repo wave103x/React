@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { Forms } from './Forms';
+import { Forms } from './Forms1';
 
 describe('forms test', () => {
   test('render component', () => {

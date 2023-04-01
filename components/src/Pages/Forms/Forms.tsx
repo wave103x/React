@@ -1,50 +1,32 @@
-import React, { Component } from 'react';
-
-import { Form, FormCardList } from '../../components/';
+import React, { useState } from 'react';
+import { Form, FormCardList } from '../../components';
 
 import styles from './Forms.module.scss';
 
 import { CardFormState } from '../../Types/CardFormProps';
 
-type Props = {
-  id?: number;
-};
+export const Forms = () => {
+  const [isDoneActive, setDoneActive] = useState(false);
+  const [cards, setCards] = useState<CardFormState[]>([]);
 
-export class Forms extends Component<
-  Props,
-  {
-    cards: CardFormState[];
-    isDoneActive: boolean;
-  }
-> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      cards: [],
-      isDoneActive: false,
-    };
-  }
-
-  setStateCard(data: CardFormState) {
-    this.setState((prevState) => ({
-      cards: [...prevState.cards, data],
-    }));
-    this.setState({ isDoneActive: true });
+  function setStateCard(data: CardFormState) {
+    setCards((prev) => {
+      return [...prev, data];
+    });
+    setDoneActive(true);
     setTimeout(() => {
-      this.setState({ isDoneActive: false });
+      setDoneActive(false);
     }, 2000);
   }
 
-  render() {
-    return (
-      <>
-        {this.state.isDoneActive ? <div className={styles.confirm}>Done!</div> : null}
-        <h1>Let&apos;s dive into the past</h1>
-        <div className={styles.formPage}>
-          <Form setStateCard={this.setStateCard.bind(this)} />
-          <FormCardList {...this.state.cards} />
-        </div>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {isDoneActive ? <div className={styles.confirm}>Done!</div> : null}
+      <h1>Let&apos;s dive into the past</h1>
+      <div className={styles.formPage}>
+        <Form setStateCard={setStateCard} />
+        <FormCardList {...cards} />
+      </div>
+    </>
+  );
+};

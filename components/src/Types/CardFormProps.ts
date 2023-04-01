@@ -3,7 +3,8 @@ export type CardFormState = {
   word: string | undefined;
   date: Date;
   heard: string;
-  feelings?: (string | undefined)[];
-  faked: boolean;
-  photo?: File | boolean;
+  feelings?: string[] | boolean;
+  faked: string;
+  photo: FileList;
+  confirm?: string;
 };
