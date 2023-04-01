@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { Card } from '../';
 import IProduct from '../../Types/Product';
@@ -7,21 +7,12 @@ import styles from './Products.module.scss';
 
 import productData from '../../data/data.json';
 
-export class Products extends Component<unknown, { data: IProduct[] }> {
-  constructor(props: unknown) {
-    super(props);
-    this.state = {
-      data: productData,
-    };
-  }
-
-  render() {
-    return (
-      <div className={styles.products}>
-        {this.state?.data?.map((product: IProduct) => (
-          <Card product={product} key={product.id} />
-        ))}
-      </div>
-    );
-  }
-}
+export const Products = () => {
+  return (
+    <div className={styles.products}>
+      {productData.map((product: IProduct) => (
+        <Card product={product} key={product.id.toString()} />
+      ))}
+    </div>
+  );
+};

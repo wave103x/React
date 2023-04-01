@@ -1,63 +1,36 @@
-import React, { Component } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 
 import styles from './SearchBar.module.scss';
 
 import { ReactComponent as SearchIcon } from './search.svg';
 
-import { SearchBarProps, SearchState } from './SearchBar.interface';
+export const SearchBar = () => {
+  const [searchValue, setSearchValue] = useState(window.localStorage.getItem('searchValue') || '');
 
-export class SearchBar extends Component<SearchBarProps, SearchState> {
-  private searchRef: React.RefObject<HTMLInputElement>;
+  const searchInputElem = useRef<HTMLInputElement>(null);
 
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.searchRef = React.createRef();
-    this.state = {
-      searchValue: window.localStorage.getItem('searchValue') || '',
-    };
-  }
+  useEffect(() => {
+    return window.localStorage.setItem('searchValue', searchValue.toString());
+  });
 
-  componentWillUnmount() {
-    window.localStorage.setItem('searchValue', this.searchRef.current?.value || '');
-  }
-
-  setSearchValue(value: string) {
-    this.setState({
-      searchValue: value,
-    });
-  }
-
-  searchHandle = (event: React.FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    this.setSearchValue(value);
-  };
-
-  formHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    event?.preventDefault();
-  };
-
-  formClickHandler = () => {
-    this.searchRef.current?.focus();
-  };
-
-  render() {
-    return (
-      <form
-        className={cn(styles.searchForm, styles.formMargin)}
-        onSubmit={this.formHandler}
-        onClick={this.formClickHandler}
-      >
-        <SearchIcon className={styles.icon} />
-        <input
-          value={this.state.searchValue}
-          ref={this.searchRef}
-          onChange={this.searchHandle}
-          type="search"
-          className={styles.searchInput}
-          placeholder="Search"
-        />
-      </form>
-    );
-  }
-}
+  return (
+    <form
+      className={cn(styles.searchForm, styles.formMargin)}
+      onSubmit={(event: FormEvent) => event?.preventDefault()}
+      onClick={() => searchInputElem.current?.focus()}
+    >
+      <SearchIcon className={styles.icon} />
+      <input
+        value={searchValue}
+        onChange={(event: FormEvent<HTMLInputElement>) =>
+          setSearchValue(event?.currentTarget.value)
+        }
+        type="search"
+        className={styles.searchInput}
+        placeholder="Search"
+        ref={searchInputElem}
+      />
+    </form>
+  );
+};
