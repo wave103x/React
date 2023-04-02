@@ -9,7 +9,6 @@
     "^.+\\.svg$": "jest-svg-transformer"
   },
   "collectCoverage": true,
-  "collectCoverageFrom": ["./src/components/Card/**", "./src/components/Products/**", "./src/Pages/Forms/**", "./src/components/Form/**", "./src/components/FormCardList/**"],
   "coverageThreshold": {
     "global": {
       "lines": 40
