@@ -12,7 +12,6 @@ export const Card = ({ product }: { product: IProduct }) => {
       </div>
       <p className={styles.title}>{product.title}</p>
       <p className={styles.category}>{product.category}</p>
-      <p className={styles.description}>{product.description}</p>
       <p className={styles.price}>{product.price}</p>
     </div>
   );

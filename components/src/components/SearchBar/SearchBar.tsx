@@ -5,7 +5,11 @@ import styles from './SearchBar.module.scss';
 
 import { ReactComponent as SearchIcon } from './search.svg';
 
-export const SearchBar = () => {
+export const SearchBar = ({
+  setSearchValueHome,
+}: {
+  setSearchValueHome: (value: string) => void;
+}) => {
   const [searchValue, setSearchValue] = useState(window.localStorage.getItem('searchValue') || '');
 
   const searchInputElem = useRef<HTMLInputElement>(null);
@@ -14,10 +18,15 @@ export const SearchBar = () => {
     return window.localStorage.setItem('searchValue', searchValue.toString());
   });
 
+  const searchHandler = (event: FormEvent) => {
+    event.preventDefault();
+    setSearchValueHome(searchValue);
+  };
+
   return (
     <form
       className={cn(styles.searchForm, styles.formMargin)}
-      onSubmit={(event: FormEvent) => event?.preventDefault()}
+      onSubmit={(event: FormEvent) => searchHandler(event)}
       onClick={() => searchInputElem.current?.focus()}
     >
       <SearchIcon className={styles.icon} />

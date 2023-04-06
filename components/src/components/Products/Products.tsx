@@ -5,12 +5,10 @@ import IProduct from '../../Types/Product';
 
 import styles from './Products.module.scss';
 
-import productData from '../../data/data.json';
-
-export const Products = () => {
+export const Products = ({ products }: { products: IProduct[] }) => {
   return (
     <div className={styles.products}>
-      {productData.map((product: IProduct) => (
+      {products.map((product: IProduct) => (
         <Card product={product} key={product.id.toString()} />
       ))}
     </div>
