@@ -1,0 +1,24 @@
+.placeholder {
+  width: 100%;
+}
+
+.iconWrapper {
+  margin: 2rem auto;
+  width: min-content;
+}
+
+.icon {
+  fill: #bdbdbd;
+  animation-name: refresh;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes refresh {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
