@@ -9,7 +9,9 @@ import { ServerConnect } from '../../utils/ServerConnect';
 import IProduct from '../../Types/Product';
 
 export const Home = () => {
-  const [searchValue, setSearchValueHome] = useState('');
+  const [searchValue, setSearchValueHome] = useState(
+    window.localStorage.getItem('searchValue') || ''
+  );
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
