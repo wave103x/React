@@ -10,15 +10,6 @@ import { Layout } from './layout/Layout';
 import { RoutePaths } from './enums/RoutePaths';
 
 export class Router extends Component {
-  private testCard = {
-    name: 'Myname',
-    word: 'qq',
-    date: new Date(),
-    heared: 'mom',
-    feelings: ['sad'],
-    faked: 'yes',
-    photo: 'http://qq.com',
-  };
   render() {
     return (
       <Routes>
