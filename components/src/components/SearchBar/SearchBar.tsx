@@ -15,9 +15,7 @@ export const SearchBar = ({
   const searchInputElem = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    return () => {
-      window.localStorage.setItem('searchValue', searchValue.toString());
-    };
+    window.localStorage.setItem('searchValue', searchValue.toString());
   }, [searchValue]);
 
   const searchHandler = (event: FormEvent) => {
