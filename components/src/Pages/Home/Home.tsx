@@ -4,39 +4,29 @@ import { Products } from '../../components/';
 import { SearchBar } from '../../components/';
 import { Placeholder } from '../../components/Placeholder/Placeholder';
 
-import { ServerConnect } from '../../utils/ServerConnect';
+import { useAppSelector } from '../../store/hooks/redux';
+import { productAPI } from '../../services/productsService';
 
 import IProduct from '../../Types/Product';
-import { useAppDispatch, useAppSelector } from '../../store/hooks/redux';
-import { fetchProducts } from '../../store/redusers/ActionCreators';
 
 export const Home = () => {
-  const dispatch = useAppDispatch();
   const { value } = useAppSelector((state) => state.searchReducer);
-  const { products, isLoading, error } = useAppSelector((state) => state.productsReducer);
-
   const [searchValue, setSearchValueHome] = useState(value);
-  // const [productsState, setProducts] = useState<IProduct[]>([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [productsState, setProducts] = useState<IProduct[]>([]);
+  const [isLoadingState, setIsLoading] = useState(false);
+
+  const { data, isLoading } = productAPI.useFetchAllProductsQuery(value);
 
   useEffect(() => {
-    dispatch(fetchProducts(value));
-    // const fetchData = async () => {
-    //   setIsLoading(true);
-    //   const data = await ServerConnect<IProduct>(searchValue);
-    //   setProducts(data);
-    //   setTimeout(() => {
-    //     setIsLoading(false);
-    //   }, 300);
-    // };
-    // fetchData();
-  }, [searchValue]);
+    setIsLoading(isLoading);
+    setProducts(data as IProduct[]);
+  }, [searchValue, isLoading]);
 
   return (
     <>
       <SearchBar setSearchValueHome={setSearchValueHome} />
-      {isLoading && <Placeholder />}
-      {!isLoading && <Products products={products} />}
+      {isLoadingState && <Placeholder />}
+      {!isLoadingState && <Products products={productsState} />}
     </>
   );
 };
