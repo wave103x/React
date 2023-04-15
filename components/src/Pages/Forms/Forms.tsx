@@ -3,13 +3,16 @@ import { Form, FormCardList } from '../../components';
 
 import styles from './Forms.module.scss';
 
-import { CardFormState } from '../../Types/CardFormProps';
+import { CardFormSumbit } from '../../Types/CardFormProps';
+import { useAppSelector } from '../../store/hooks/redux';
 
 export const Forms = () => {
-  const [isDoneActive, setDoneActive] = useState(false);
-  const [cards, setCards] = useState<CardFormState[]>([]);
+  const { products } = useAppSelector((state) => state.formReducer);
 
-  function setStateCard(data: CardFormState) {
+  const [isDoneActive, setDoneActive] = useState(false);
+  const [cards, setCards] = useState<CardFormSumbit[]>(products);
+
+  function setStateCard(data: CardFormSumbit) {
     setCards((prev) => {
       return [...prev, data];
     });

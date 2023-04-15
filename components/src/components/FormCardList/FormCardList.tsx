@@ -4,16 +4,17 @@ import { FormCard } from '../FormCard/FormCard';
 
 import styles from './FormCardList.module.scss';
 
-import { CardFormState } from '../../Types/CardFormProps';
+import { CardFormSumbit } from '../../Types/CardFormProps';
 
-export const FormCardList = (props: CardFormState[]) => {
+export const FormCardList = (props: CardFormSumbit[]) => {
   const cards = Object.values(props);
 
   return (
     <div data-testid="card-list" className={styles.cards}>
-      {cards.map((elem, index) => (
-        <FormCard {...elem} key={index} />
-      ))}
+      {cards.map((elem, index) => {
+        if (index === 0) return;
+        return <FormCard {...elem} key={index} />;
+      })}
     </div>
   );
 };

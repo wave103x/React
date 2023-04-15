@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 import styles from './Form.module.scss';
 
-import { CardFormState } from '../../Types/CardFormProps';
+import { formSlice } from '../../store/redusers/FormSlice';
+
+import { CardFormState, CardFormSumbit } from '../../Types/CardFormProps';
 
 type FormValues = CardFormState;
 
-export const Form = ({ setStateCard }: { setStateCard: (data: CardFormState) => void }) => {
+export const Form = ({ setStateCard }: { setStateCard: (data: CardFormSumbit) => void }) => {
   const {
     register,
     handleSubmit,
@@ -15,9 +18,17 @@ export const Form = ({ setStateCard }: { setStateCard: (data: CardFormState) => 
     formState: { errors, isSubmitSuccessful },
   } = useForm<FormValues>();
 
+  const dispatch = useDispatch();
+  const { submit } = formSlice.actions;
+
   const onSubmit: SubmitHandler<FormValues> = (formData: CardFormState) => {
-    const inputPhoto = structuredClone(formData.photo);
-    setStateCard({ ...formData, photo: inputPhoto });
+    const inputPhoto = structuredClone(formData.photo).item(0);
+    const photoFile = inputPhoto && URL.createObjectURL(inputPhoto);
+    const data = photoFile && { ...formData, photo: photoFile };
+    if (data === null) return;
+    if (data === '') return;
+    dispatch(submit({ products: [data] }));
+    setStateCard(data);
   };
 
   useEffect(() => {
