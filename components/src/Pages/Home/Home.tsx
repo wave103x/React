@@ -7,11 +7,12 @@ import { Placeholder } from '../../components/Placeholder/Placeholder';
 import { ServerConnect } from '../../utils/ServerConnect';
 
 import IProduct from '../../Types/Product';
+import { useAppSelector } from '../../store/hooks/redux';
 
 export const Home = () => {
-  const [searchValue, setSearchValueHome] = useState(
-    window.localStorage.getItem('searchValue') || ''
-  );
+  const { value } = useAppSelector((state) => state.searchReducer);
+
+  const [searchValue, setSearchValueHome] = useState(value);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
