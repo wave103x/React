@@ -1,0 +1,26 @@
+.card {
+  box-sizing: border-box;
+  border: 1px solid #e5e5e5;
+  border-radius: 1rem;
+  max-width: calc(33% - 0.5rem);
+  min-width: 200px;
+  height: min-content;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.text span {
+  color: #999;
+}
+
+.imageWrap {
+  max-width: 100%;
+}
+
+.image {
+  width: 100%;
+}
+
+.text {
+  padding: 0 1rem;
+}
