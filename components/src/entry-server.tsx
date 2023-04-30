@@ -5,9 +5,8 @@ import { App } from './App';
 
 import { setupStore } from './store/store';
 
-const store = setupStore();
-
 export const render = (url: string, opts: RenderToPipeableStreamOptions) => {
+  const store = setupStore();
   const stream = renderToPipeableStream(
     <Provider store={store}>
       <StaticRouter location={url}>
