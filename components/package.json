@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_ENV=development node server",
-    "build": "npm build:client && npm build:server",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
+    "build": "npm run build:client && npm run build:server",
     "start": "node src/server.js"
   },
   "dependencies": {

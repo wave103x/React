@@ -5,7 +5,7 @@ import { App } from './App';
 
 import { setupStore } from './store/store';
 
-export const render = (url: string, opts: RenderToPipeableStreamOptions) => {
+export async function render(url: string, opts: RenderToPipeableStreamOptions) {
   const store = setupStore();
   const stream = renderToPipeableStream(
     <Provider store={store}>
@@ -15,5 +15,5 @@ export const render = (url: string, opts: RenderToPipeableStreamOptions) => {
     </Provider>,
     opts
   );
-  return stream;
-};
+  return { stream };
+}

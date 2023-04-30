@@ -2,34 +2,37 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import renderApp from '../dist/server/entry-server.js';
+import { createServer } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3001;
-const html = fs.readFileSync(path.resolve(__dirname, '../dist/client/index.html')).toString();
-const parts = html.split('<!--one-->');
-const app = express();
 
-app.use('/assets', express.static(path.resolve(__dirname, '../dist/client/assets')));
-app.use((req, res) => {
-  res.write(parts[0]);
-  const stream = renderApp(req.url, {
-    onShellReady() {
-      stream.pipe(res);
-    },
-    onShellError() {
-      // do error handling
-    },
-    onAllReady() {
-      // last thing to write
-      res.write(parts[1]);
-      res.end();
-    },
-    onError(err) {
-      console.error(err);
-    },
+async function newServer() {
+  const app = express();
+  const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom' });
+  app.use(vite.middlewares);
+
+  app.use('/', async (req, res) => {
+    const url = req.originalUrl;
+
+    let template = fs.readFileSync(path.resolve(__dirname, '../index.html'), 'utf-8');
+    template = await vite.transformIndexHtml(url, template);
+
+    const [part0, part1] = template.split('<!--one-->');
+    const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
+
+    res.write(part0);
+    const { stream } = await render(url, {
+      onShellReady() {
+        stream.pipe(res);
+      },
+      onAllReady() {
+        res.write(part1);
+        res.end();
+      },
+    });
   });
-});
+  app.listen(PORT);
+}
 
-console.log(`listening on http://localhost:${PORT}`);
-app.listen(PORT);
+newServer();
