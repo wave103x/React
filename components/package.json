@@ -7,7 +7,9 @@
     "start": "ts-node --esm src/server.ts",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
-    "build": "npm run build:client && npm run build:server && tsc src/server.ts"
+    "build": "npm run build:client && npm run build:server && tsc src/server.ts",
+    "lint": "eslint ./src",
+    "test": "jest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
